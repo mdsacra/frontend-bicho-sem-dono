@@ -1,12 +1,25 @@
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
+const getData = (action) => {
+  fetch('http://localhost:8080/BichoSemDonoOnBuilding',)
+  .then(response => response.json())
+  .then(data =>  action(data));  
+}
+
+const App = () => {
+  const [data, setData] = useState();
+
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Bicho Sem Dono</h1>
+        
+        <button onClick={() => getData(setData)}>
+          <img src='insert_pet_btn.png' width={150} alt='clique aqui' />
+        </button>
+        <h1>{data && data.title}</h1>
         <p>
-          Em Breve!
+          {data && data.subtitle}
         </p>
       </header>
     </div>
