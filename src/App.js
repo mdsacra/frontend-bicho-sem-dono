@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const getData = (action) => {
-  fetch('http://localhost:8080/BichoSemDonoOnBuilding',)
+  fetch('https://bichosemdono.herokuapp.com//BichoSemDonoOnBuilding')
   .then(response => response.json())
   .then(data =>  action(data));  
 }
