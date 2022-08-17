@@ -1,27 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Map from './Map/Map.js';
+import { Layers } from './Layers/Layers';
+import { TileLayer } from './Layers/TileLayer';
+import { OSM } from "ol/source";
 
-const getData = (action) => {
-  fetch('https://bichosemdono.herokuapp.com/BichoSemDonoOnBuilding')
-  .then(response => response.json())
-  .then(data =>  action(data));  
-}
+import { fromLonLat } from 'ol/proj';
 
 const App = () => {
-  const [data, setData] = useState();
+  const [center, setCenter] = useState([-52.33151, -31.76970]);
+  const [zoom, setZoom] = useState(13); 
 
   return (
     <div className="App">
-      <header className="App-header">
-        
-        <button onClick={() => getData(setData)}>
-          <img src='insert_pet_btn.png' width={150} alt='clique aqui' />
-        </button>
-        <h1>{data && data.title}</h1>
-        <p>
-          {data && data.subtitle}
-        </p>
-      </header>
+      <Map center={fromLonLat(center)} zoom={zoom}>
+        <Layers>
+          <TileLayer
+            source={new OSM()}
+            zIndex={0}
+          />
+        </Layers>
+      </Map>
     </div>
   );
 }
