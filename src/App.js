@@ -4,6 +4,7 @@ import Map from './Map/Map.js';
 import { Layers } from './Layers/Layers';
 import { TileLayer } from './Layers/TileLayer';
 import { OSM } from "ol/source";
+import { IconVectorLayer } from './Features/IconVectorLayer';
 
 import { fromLonLat } from 'ol/proj';
 
@@ -19,6 +20,7 @@ const App = () => {
             source={new OSM()}
             zIndex={0}
           />
+          <IconVectorLayer />
         </Layers>
       </Map>
     </div>
