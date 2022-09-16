@@ -3,7 +3,7 @@ import './App.css';
 import { MainLayerMap } from './Map/MainLayerMap';
 import { Layers } from './Layers/Layers';
 import { TileLayer } from './Layers/TileLayer';
-import { IconVectorLayer } from './Features/IconVectorLayer';
+import { IconVectorLayer } from './Layers/IconVectorLayer';
 
 const App = () => {
 
