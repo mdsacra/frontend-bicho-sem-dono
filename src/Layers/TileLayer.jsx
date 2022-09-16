@@ -1,16 +1,18 @@
 import { useContext, useEffect } from "react";
 import MapContext from "../Map/MapContext";
 import OLTileLayer from "ol/layer/Tile";
+import { OSM } from "ol/source";
 
-const TileLayer = ({ source, zIndex = 0 }) => {
+const TileLayer = () => {
   const { map } = useContext(MapContext); 
 
   useEffect(() => {
     if (!map) return;
-    
+    const zIndex = 0;
+
     let tileLayer = new OLTileLayer({
-      source,
-      zIndex,
+      source: new OSM(),
+      zIndex: zIndex,
     });
 
     map.addLayer(tileLayer);
