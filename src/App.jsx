@@ -4,17 +4,20 @@ import { MainLayerMap } from './Map/MainLayerMap';
 import { Layers } from './Layers/Layers';
 import { TileLayer } from './Layers/TileLayer';
 import { IconVectorLayer } from './Layers/IconVectorLayer';
+import { ChakraProvider } from '@chakra-ui/react'
 
 const App = () => {
 
   return (
     <div className="App">
-      <MainLayerMap>
-        <Layers>
-          <TileLayer/>
-          <IconVectorLayer />
-        </Layers>
-      </MainLayerMap>
+      <ChakraProvider>
+        <MainLayerMap>
+          <Layers>
+            <TileLayer/>
+            <IconVectorLayer />
+          </Layers>
+        </MainLayerMap>
+      </ChakraProvider>
     </div>
   );
 }
