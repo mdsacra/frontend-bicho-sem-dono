@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import "./MainLayerMap.css";
-import MapContext from "./MapContext";
+import MapContext from "../context/MapContext";
 import { View, Map } from "ol";
 import { fromLonLat } from 'ol/proj';
 
-const MainLayerMap = ({ children }) => {
+const MainLayerMap = ({ children, style }) => {
   const mapRef = useRef();
   const [map, setMap] = useState(null);
   const DEFAULT_CENTER = useMemo(() => ([-52.33199928897088, -31.752645766522427]), []);
@@ -29,7 +29,7 @@ const MainLayerMap = ({ children }) => {
 
   return (
     <MapContext.Provider value={{ map }}>
-      <div ref={mapRef} className="ol-map">
+      <div ref={mapRef} className="ol-map" style={style}>
         {children}
       </div>
     </MapContext.Provider>

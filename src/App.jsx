@@ -1,22 +1,13 @@
 import React from 'react';
-import './App.css';
-import { MainLayerMap } from './Map/MainLayerMap';
-import { Layers } from './Layers/Layers';
-import { TileLayer } from './Layers/TileLayer';
-import { IconVectorLayer } from './Layers/IconVectorLayer';
+
 import { ChakraProvider } from '@chakra-ui/react'
+import { InitialPage } from './initial-page/InitialPage';
 
 const App = () => {
-
   return (
     <div className="App">
       <ChakraProvider>
-        <MainLayerMap>
-          <Layers>
-            <TileLayer/>
-            <IconVectorLayer />
-          </Layers>
-        </MainLayerMap>
+        <InitialPage />
       </ChakraProvider>
     </div>
   );

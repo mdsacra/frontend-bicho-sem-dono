@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import MapContext from "../Map/MapContext";
+import MapContext from "../context/MapContext";
 import VectorSource from 'ol/source/Vector';
 import OLVectorLayer from "ol/layer/Vector";
-import { listOwnerlessPetPosts } from '../api/ownerless-pet-post-api';
-import { IconFeature } from "../Features/icon/IconFeature";
+import { listOwnerlessPetPosts } from '../../../api/ownerless-pet-post-api';
+import { IconFeature } from "../features/icon/IconFeature";
 
 const IconVectorLayer = () => {
     const { map } = useContext(MapContext); 

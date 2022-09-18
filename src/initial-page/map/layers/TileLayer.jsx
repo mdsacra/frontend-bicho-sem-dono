@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import MapContext from "../Map/MapContext";
+import MapContext from "../context/MapContext";
 import OLTileLayer from "ol/layer/Tile";
 import { OSM } from "ol/source";
 
