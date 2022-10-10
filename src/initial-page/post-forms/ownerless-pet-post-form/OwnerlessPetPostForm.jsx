@@ -1,50 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import './styles.css';
-import { Stack, Textarea, Radio, RadioGroup, ButtonGroup } from '@chakra-ui/react';
+import { Stack, Textarea, Radio, RadioGroup, ButtonGroup, Input } from '@chakra-ui/react';
 import { VerticalSpace } from "../../../common-components/VerticalSpace";
 import { CtaButton } from "../../../common-components/buttons/CtaButton";
 import { GhostButton } from "../../../common-components/buttons/GhostButton";
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import { InputWithGoogle } from "../../../common-components/input-with-google/InputWithGoogle";
 import { createOwnerlessPetPost } from "../../../api/ownerless-pet-post-api";
 import { Loading } from "../../../common-components/loading/Loading";
+import { useEffect } from "react";
 
 const OwnerlessPetPostForm = ({ onClose }) => {
     const [petLocalization, setPetLocalization] = useState({});
     const [situationDescription, setSituationDescription] = useState(String);
-    const [petSpecies, setPetSpecies] = useState(null);
+    const [petSpecies, setPetSpecies] = useState("1");
     const [isLoading, setIsLoading] = useState(false);
+    const inputRef = useRef();
+    const autoCompleteRef = useRef();
+    
+    useEffect(() => {
+        const injectAutoComplete = () => {
+            if (window.google){
+                const autoCompleteOptions = {
+                    componentRestrictions: { country: 'br' },
+                    fields: ['formatted_address', 'geometry'],
+                    types: ['address']
+                };
+               
+                autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+                    inputRef.current,
+                    autoCompleteOptions
+                );
+            }
+        };
+
+        if (!autoCompleteRef.current) {
+            injectAutoComplete();
+        }
+    }, []);
 
     const submitPost = async () => {
         setIsLoading(true);
 
+        await handleLocalization();
+
         const ownerlessPetPost = {
             description: situationDescription,
             petSpecies: Number(petSpecies),
-            localization: {
-                latitude: "-52.331387745607046", 
-                longitude: "-31.75265032803079",
-                address: "Rua Gonçalves Chaves, 3797 - Centro, Pelotas - RS"
-            }
+            localization: petLocalization
         }
+
         await createOwnerlessPetPost(ownerlessPetPost);
+
+        console.log(ownerlessPetPost);
 
         setIsLoading(false);
         onClose();
-    }
+    };
+
+    const handleLocalization = async () => {
+        var place = await autoCompleteRef.current.getPlace();
+        var latitude = await place.geometry.location.lat();
+        var longitude = await place.geometry.location.lng();
+        var address = place.formatted_address;
+
+        setPetLocalization(petLocalization => (
+            petLocalization.latitude = String(latitude),
+            petLocalization.longitude = String(longitude),
+            petLocalization.address = address
+        ));
+    };
 
     const handleSituationDescriptionChange = (e) => {
         var inputValue = e.target.value;
         setSituationDescription(inputValue);
-    }
+    };
 
     return (
         <div className="ownerless-pet-post-form">
             {isLoading ? <Loading size="xl" /> : 
             <form>
-                <InputWithGoogle
-                    onChange={setPetLocalization}
-                    placeholder='Qual o local em que o pet está?'/>
+                <Input variant="bsd" placeholder='Qual o local em que o pet está?' ref={inputRef}/>
                 <VerticalSpace />
                 <Textarea 
                     value={situationDescription}
