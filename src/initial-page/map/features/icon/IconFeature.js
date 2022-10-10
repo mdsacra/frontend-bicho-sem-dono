@@ -12,9 +12,9 @@ export const IconFeature = (localization) => {
             src: ownerlessPetPostMarker,
         })
     });
-    
+
     const iconFeature = new Feature({
-        geometry: new Point([localization.latitude, localization.longitude])
+        geometry: new Point([localization.longitude, localization.latitude])
     });
           
     iconFeature.setStyle(iconStyle);
