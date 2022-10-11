@@ -1,0 +1,10 @@
+.ownerless-pet-post-information {
+    padding: 88px 16px 16px 16px;
+    position: absolute;
+    top: 0;
+    height: 80%;
+    width: 100%;
+    background-color: #FF3936;
+    border-radius: 0 0 16px 16px;
+    z-index: 1000;
+}

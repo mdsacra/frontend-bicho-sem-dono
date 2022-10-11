@@ -4,9 +4,9 @@ import {Icon, Style} from 'ol/style';
 import ownerlessPetPostMarker from './markers/ownerless-pet-post-marker.png'
 import {useGeographic} from 'ol/proj';
 
-export const IconFeature = (localization) => {
+export const IconFeature = (post) => {
     useGeographic();
-    console.log(localization);
+
     const iconStyle = new Style({
         image: new Icon({
             src: ownerlessPetPostMarker,
@@ -14,10 +14,11 @@ export const IconFeature = (localization) => {
     });
 
     const iconFeature = new Feature({
-        geometry: new Point([localization.longitude, localization.latitude])
+        geometry: new Point([post.localization.longitude, post.localization.latitude])
     });
-          
+
     iconFeature.setStyle(iconStyle);
+    iconFeature.setProperties(post);
 
     return iconFeature;
 }
