@@ -4,7 +4,6 @@ import { Layers } from './map/layers/Layers';
 import { TileLayer } from './map/layers/TileLayer';
 import { IconVectorLayer } from './map/layers/IconVectorLayer';
 import { MainMenu } from "./main-menu/MainMenu";
-import './styles.css';
 
 export const InitialPage = () => (
     <div className="initial-page">
