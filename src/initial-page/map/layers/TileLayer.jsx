@@ -4,29 +4,29 @@ import OLTileLayer from "ol/layer/Tile";
 import { OSM } from "ol/source";
 
 const TileLayer = () => {
-  const { map } = useContext(MapContext); 
+	const { map } = useContext(MapContext); 
 
-  useEffect(() => {
-    if (!map) return;
-    const zIndex = 0;
+	useEffect(() => {
+		if (!map) return;
+		const zIndex = 0;
 
-    let tileLayer = new OLTileLayer({
-      source: new OSM(),
-      zIndex: zIndex,
-    });
+		let tileLayer = new OLTileLayer({
+			source: new OSM(),
+			zIndex: zIndex,
+		});
 
-    map.addLayer(tileLayer);
+		map.addLayer(tileLayer);
 
-    tileLayer.setZIndex(zIndex);
+		tileLayer.setZIndex(zIndex);
 
-    return () => {
-      if (map) {
-        map.removeLayer(tileLayer);
-      }
-    };
-  }, [map]);
+		return () => {
+			if (map) {
+				map.removeLayer(tileLayer);
+			}
+		};
+	}, [map]);
 
-  return null;
+	return null;
 };
 
 export { TileLayer };

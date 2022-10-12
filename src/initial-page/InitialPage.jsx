@@ -1,18 +1,20 @@
 import React from "react";
-import { MainLayerMap } from './map/main-layer/MainLayerMap';
-import { Layers } from './map/layers/Layers';
-import { TileLayer } from './map/layers/TileLayer';
-import { IconVectorLayer } from './map/layers/icon-vector-layer/IconVectorLayer';
+import { MainLayerMap } from "./map/main-layer/MainLayerMap";
+import { Layers } from "./map/layers/Layers";
+import { TileLayer } from "./map/layers/TileLayer";
+import { IconVectorLayer } from "./map/layers/icon-vector-layer/IconVectorLayer";
 import { MainMenu } from "./main-menu/MainMenu";
 
-export const InitialPage = () => (
-    <div className="initial-page">
-        <MainLayerMap style={{ height: window.innerHeight}}>
-          <Layers>
-            <TileLayer/>
-            <IconVectorLayer />
-          </Layers>
-        </MainLayerMap>
-        <MainMenu />
-    </div>
-    )
+export function InitialPage() {
+	return (
+		<div className="initial-page">
+			<MainLayerMap>
+				<Layers>
+					<TileLayer />
+					<IconVectorLayer />
+				</Layers>
+			</MainLayerMap>
+			<MainMenu />
+		</div>
+	);
+}
