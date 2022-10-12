@@ -7,5 +7,5 @@ const Layers = ({ children }) => {
 export { Layers };
 
 Layers.propTypes = {
-	children: PropTypes.element.isRequired
+	children: PropTypes.arrayOf(PropTypes.element).isRequired
 };
