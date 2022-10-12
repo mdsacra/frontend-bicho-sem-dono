@@ -4,10 +4,24 @@ import VectorSource from "ol/source/Vector";
 import OLVectorLayer from "ol/layer/Vector";
 import { listOwnerlessPetPosts } from "../../../../api/ownerless-pet-post-api";
 import { IconFeature } from "../../features/icon/IconFeature";
+import {
+	Drawer,
+	DrawerContent,
+	DrawerOverlay,
+	DrawerBody,
+	useDisclosure,
+	DrawerHeader,
+	DrawerFooter,
+	Text
+} from "@chakra-ui/react";
+import { GhostButton } from "../../../../common-components/buttons/GhostButton";
+import { CloseIcon } from "@chakra-ui/icons";
 import "./styles.css";
+import { VerticalSpace } from "../../../../common-components/VerticalSpace";
 
 const IconVectorLayer = () => {
 	const { map } = useContext(MapContext); 
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [posts, setPosts] = useState(null);
 	const [postIconInformation, setPostIconInformation] = useState({});
 	const [isShowingPostInformation, setIsShowingPostInformation] = useState(false);
@@ -15,9 +29,9 @@ const IconVectorLayer = () => {
 	const getPostIconInformation = useCallback((e) => {
 		map.forEachFeatureAtPixel(e.pixel, () => {
 			const feature = map.getFeaturesAtPixel(e.pixel)[0];
-			console.log(feature);
 			setPostIconInformation(feature.values_);
 			setIsShowingPostInformation(true);
+			onOpen();
 		});
 	}, [map]);
 
@@ -38,9 +52,9 @@ const IconVectorLayer = () => {
 			let vectorLayer = new OLVectorLayer({
 				source: vectorSource,
 			});
-  
-			map.on("click", getPostIconInformation);
+
 			map.addLayer(vectorLayer);
+			map.on("click", getPostIconInformation);
   
 			return () => {
 				if (map) {
@@ -49,23 +63,42 @@ const IconVectorLayer = () => {
 			};
 		}
 	}, [map, posts, getPostIconInformation]);
-      
-	console.log(postIconInformation);
-	console.log(isShowingPostInformation);
 
 	return (
-		<div>
-			{isShowingPostInformation && 
-<div className="ownerless-pet-post-information">
-	<p>{postIconInformation.petSpecies === 1 ? "Cachorro abandonado" : "Gato abandonado"}</p>
-	<p>{postIconInformation.localization.address}</p>
-	<p>{postIconInformation.description}</p>
-	<button onClick={() => setIsShowingPostInformation(false)}>Fechar</button>
-</div>}
-		</div>
-
+		<Drawer
+			isOpen={isOpen}
+			placement='top'
+		>
+			<DrawerOverlay />
+			<DrawerContent minHeight="60%" borderBottomRadius="16px" bg="bsd.red">
+				{ isShowingPostInformation &&
+				<>
+					<div className="drawer-header">
+						<DrawerHeader color="bsd.blue">
+							<Text fontSize="2xl">Pet abandonado</Text>
+							<Text 
+								fontSize="sm" 
+								fontWeight={400}
+							>
+								{postIconInformation.localization.address}
+							</Text>
+						</DrawerHeader>
+					</div>
+					<div className="drawer-body">
+						<DrawerBody >
+							<Text fontSize="xl" color="bsd.blue">{postIconInformation.description}</Text>
+							<VerticalSpace />
+						</DrawerBody>
+					</div>
+					
+					<DrawerFooter>
+						<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => onClose()} />
+					</DrawerFooter>
+				</>
+				}
+			</DrawerContent>
+		</Drawer>
 	);
-
 };
 
 export { IconVectorLayer };
