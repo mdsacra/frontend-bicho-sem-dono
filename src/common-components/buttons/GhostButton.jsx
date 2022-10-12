@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-export const GhostButton = ({ label, onClick, icon }) => {
+export const GhostButton = ({ label, onClick, icon, textColor }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleClick = () => {
@@ -13,7 +13,7 @@ export const GhostButton = ({ label, onClick, icon }) => {
 
 	return (<Button
 		variant='ghost'
-		textColor='#f2cc0c'
+		textColor={textColor}
 		fontWeight='normal'
 		isLoading={isLoading}
 		onClick={handleClick}
@@ -24,5 +24,6 @@ export const GhostButton = ({ label, onClick, icon }) => {
 GhostButton.propTypes = {
 	label: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
-	icon: PropTypes.element
+	icon: PropTypes.element,
+	textColor: PropTypes.string.isRequired
 };
