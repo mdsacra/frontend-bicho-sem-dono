@@ -51,8 +51,6 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 
 		await createOwnerlessPetPost(ownerlessPetPost);
 
-		console.log(ownerlessPetPost);
-
 		setIsLoading(false);
 		onClose();
 	};
@@ -96,7 +94,7 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 					<VerticalSpace />
 					<div className="form-buttons">
 						<ButtonGroup spacing={10}>
-							<GhostButton label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
+							<GhostButton textColor="bsd.yellow" label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
 							<CtaButton label="Salvar" onClick={() => submitPost()} icon={<CheckIcon />}/>
 						</ButtonGroup>
 					</div>
