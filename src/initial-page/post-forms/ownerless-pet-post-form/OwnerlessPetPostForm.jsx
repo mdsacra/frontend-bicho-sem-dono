@@ -75,8 +75,8 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 		var address = place.formatted_address;
 
 		setPetLocalization(petLocalization => (
-			petLocalization.latitude = String(latitude),
-			petLocalization.longitude = String(longitude),
+			petLocalization.latitude = latitude,
+			petLocalization.longitude = longitude,
 			petLocalization.address = address
 		));
 	};
