@@ -1,32 +1,56 @@
-import React, { useRef, useState, useEffect, useMemo } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./MainLayerMap.css";
 import MapContext from "../context/MapContext";
 import { View, Map } from "ol";
 import { fromLonLat } from "ol/proj";
 import PropTypes from "prop-types";
+import { useCallback } from "react";
 
 const MainLayerMap = ({ children }) => {
 	const mapRef = useRef();
 	const [map, setMap] = useState(null);
-	const DEFAULT_CENTER = useMemo(() => ([-52.33199928897088, -31.752645766522427]), []);
-	const DEFAULT_ZOOM = 15;
+	const [deviceLocation, setDeviceLocation] = useState(null);
+	const DEFAULT_ZOOM = 14;
+
+	const getDeviceLocation = useCallback(() => {
+		navigator.geolocation.getCurrentPosition(position => 
+			setDeviceLocation(
+				[
+					position.coords.longitude,
+					position.coords.latitude
+					
+				]
+			)
+		);
+	}, []);
 
 	useEffect(() => {
-		let options = {
-			view: new View(
-				{ 
-					zoom: DEFAULT_ZOOM, 
-					center: fromLonLat(DEFAULT_CENTER)
-				}
-			)
-		};
+		if (deviceLocation === null) {
+			getDeviceLocation();
+		}
 
-		let mapObject = new Map(options);
-		mapObject.setTarget(mapRef.current);
-		setMap(mapObject);
+		let mapObject;
+		if (deviceLocation){
+			let options = {
+				view: new View(
+					{ 
+						zoom: DEFAULT_ZOOM, 
+						center: fromLonLat(deviceLocation)
+					}
+				)
+			};
+	
+			mapObject = new Map(options);
+			mapObject.setTarget(mapRef.current);
+			setMap(mapObject);
+		}
     
-		return () => mapObject.setTarget(undefined);
-	}, [DEFAULT_CENTER]);
+		return () => { 
+			if (mapObject) {
+				mapObject.setTarget(undefined);
+			}  
+		};
+	}, [deviceLocation, getDeviceLocation]);
 
 	return (
 		<MapContext.Provider value={{ map }}>
