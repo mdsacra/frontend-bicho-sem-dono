@@ -18,12 +18,13 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 	const autoCompleteRef = useRef();
     
 	useEffect(() => {
-		const injectAutoComplete = () => {
+		const injectAutoComplete = (defaultBounds) => {
 			if (window.google){
 				const autoCompleteOptions = {
 					componentRestrictions: { country: "br" },
 					fields: ["formatted_address", "geometry"],
-					types: ["address"]
+					types: ["address"],
+					bounds: defaultBounds
 				};
                
 				autoCompleteRef.current = new window.google.maps.places.Autocomplete(
@@ -34,7 +35,19 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 		};
 
 		if (!autoCompleteRef.current) {
-			injectAutoComplete();
+			navigator.geolocation.getCurrentPosition(position => {
+				const defaultBounds = {
+					north: position.coords.latitude + 0.1,
+					south: position.coords.latitude - 0.1,
+					east: position.coords.longitude + 0.1,
+					west: position.coords.longitude - 0.1
+				};
+
+				console.log(defaultBounds);
+				injectAutoComplete(defaultBounds);
+
+
+			});
 		}
 	}, []);
 
