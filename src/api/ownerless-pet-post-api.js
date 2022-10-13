@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const DEFAULT_API_URI = process.env.REACT_APP_DEFAULT_API_URI;
 
-export const listOwnerlessPetPosts = () => 
-	fetch(`${DEFAULT_API_URI}/ownerless-pet-post`, {
+export const listOwnerlessPetPosts = (longitude, latitude) => 
+	fetch(`${DEFAULT_API_URI}/ownerless-pet-post?longitude=${longitude}&latitude=${latitude}`, {
 		method: "GET"
 	})
 		.then(res => res.json())

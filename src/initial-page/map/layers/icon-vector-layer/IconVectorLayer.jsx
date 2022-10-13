@@ -18,6 +18,7 @@ import { GhostButton } from "../../../../common-components/buttons/GhostButton";
 import { CloseIcon } from "@chakra-ui/icons";
 import "./styles.css";
 import { VerticalSpace } from "../../../../common-components/VerticalSpace";
+import { toLonLat } from "ol/proj";
 
 const IconVectorLayer = () => {
 	const { map } = useContext(MapContext); 
@@ -39,7 +40,11 @@ const IconVectorLayer = () => {
 		if (!map) return;
 
 		if (!posts){
-			listOwnerlessPetPosts().then(result => setPosts(result));
+			console.log(toLonLat(map.getView().getCenter()));
+			var longitudeAndLatitude = toLonLat(map.getView().getCenter());
+			var longitude = longitudeAndLatitude[0];
+			var latitude = longitudeAndLatitude[1];
+			listOwnerlessPetPosts(longitude, latitude).then(result => setPosts(result));
 		}
   
 		if (posts?.length > 0){
