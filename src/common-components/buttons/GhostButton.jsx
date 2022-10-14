@@ -11,18 +11,22 @@ export const GhostButton = ({ label, onClick, icon, textColor }) => {
 		setIsLoading(false);
 	};
 
+	if (!label && !icon){
+		return;
+	}
+	
 	return (<Button
 		variant='ghost'
 		textColor={textColor}
 		fontWeight='normal'
 		isLoading={isLoading}
 		onClick={handleClick}
-		rightIcon={icon}
-	>{label}</Button>);
+		rightIcon={label ? icon : null}
+	>{label ? label : icon}</Button>);
 };
 
 GhostButton.propTypes = {
-	label: PropTypes.string.isRequired,
+	label: PropTypes.string,
 	onClick: PropTypes.func.isRequired,
 	icon: PropTypes.element,
 	textColor: PropTypes.string.isRequired
