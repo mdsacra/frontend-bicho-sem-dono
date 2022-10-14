@@ -11,7 +11,6 @@ import {
 	DrawerBody,
 	useDisclosure,
 	DrawerHeader,
-	DrawerFooter,
 	Text
 } from "@chakra-ui/react";
 import { GhostButton } from "../../../../common-components/buttons/GhostButton";
@@ -40,7 +39,6 @@ const IconVectorLayer = () => {
 		if (!map) return;
 
 		if (!posts){
-			console.log(toLonLat(map.getView().getCenter()));
 			var longitudeAndLatitude = toLonLat(map.getView().getCenter());
 			var longitude = longitudeAndLatitude[0];
 			var latitude = longitudeAndLatitude[1];
@@ -93,12 +91,11 @@ const IconVectorLayer = () => {
 						<DrawerBody >
 							<Text fontSize="xl" color="bsd.blue">{postIconInformation.description}</Text>
 							<VerticalSpace />
+							<div className="drawer-close-button">
+								<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => onClose()} />
+							</div>
 						</DrawerBody>
 					</div>
-					
-					<DrawerFooter>
-						<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => onClose()} />
-					</DrawerFooter>
 				</>
 				}
 			</DrawerContent>
