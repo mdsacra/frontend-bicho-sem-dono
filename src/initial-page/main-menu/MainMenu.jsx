@@ -9,18 +9,22 @@ function MainMenu() {
 	const handleForm = () => (setIsOwnerlessPetPostFormOpen(!isOwnerlessPetPostFormOpen));
 
 	return (
-		<div>
+		<>
 			{isOwnerlessPetPostFormOpen
                 && <OwnerlessPetPostForm onClose={handleForm} />}
-
-			<div className="menu-bar">
+			<div className="menu-bar" />
+			<div className="main-menu-container">
+				
+							
 				<div className="post-ownerless-pet">
 					<button onClick={() => handleForm()}>
 						<img src={AddPostBtnImg} alt="add_post_btn" />
 					</button>
 				</div>
+
 			</div>
-		</div>
+		</>
+		
 	);
 }
 

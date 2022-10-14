@@ -10,10 +10,12 @@ import { Loading } from "../../../common-components/loading/Loading";
 import PropTypes from "prop-types";
 
 const OwnerlessPetPostForm = ({ onClose }) => {
-	const [petLocalization, setPetLocalization] = useState(null);
+	const [petLocalization, setPetLocalization] = useState({});
+	const [petLocalizationInputValue, setPetLocalizationInputValue] = useState(String);
 	const [situationDescription, setSituationDescription] = useState(String);
 	const [petSpecies, setPetSpecies] = useState("1");
 	const [isLoading, setIsLoading] = useState(false);
+	const [isFormFilled, setIsFormFilled] = useState(false);
 	const inputRef = useRef();
 	const autoCompleteRef = useRef();
     
@@ -31,6 +33,8 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 					inputRef.current,
 					autoCompleteOptions
 				);
+
+				autoCompleteRef.current.addListener("place_changed", handleLocalization);
 			}
 		};
 
@@ -51,8 +55,6 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 	const submitPost = async () => {
 		setIsLoading(true);
 
-		await handleLocalization();
-
 		const ownerlessPetPost = {
 			description: situationDescription,
 			petSpecies: Number(petSpecies),
@@ -67,52 +69,77 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 
 	const handleLocalization = async () => {
 		var place = await autoCompleteRef.current.getPlace();
-		var latitude = await place.geometry.location.lat();
-		var longitude = await place.geometry.location.lng();
-		var address = place.formatted_address;
+		if (place) {
+			setPetLocalizationInputValue(place.formatted_address);
+			setPetLocalization(petLocalization => (
+				petLocalization.latitude = place.geometry.location.lat(),
+				petLocalization.longitude = place.geometry.location.lng(),
+				petLocalization.address = place.formatted_address
+			));
+		} else {
+			setPetLocalizationInputValue("");
+		}
+	};
 
-		setPetLocalization(petLocalization => (
-			petLocalization.latitude = latitude,
-			petLocalization.longitude = longitude,
-			petLocalization.address = address
-		));
+	const handlePetSpeciesChange = (e) => {
+		console.log(e);
+		setPetSpecies(e);
 	};
 
 	const handleSituationDescriptionChange = (e) => {
 		var inputValue = e.target.value;
 		setSituationDescription(inputValue);
 	};
+	
+	const handlePetLocalizationInputValueChange = (e) => {
+		var inputValue = e.target.value;
+		setPetLocalizationInputValue(inputValue);
+	};
+
+	useEffect(() => {
+		if (situationDescription.trim().length > 0 && petLocalizationInputValue.trim().length > 0){
+			setIsFormFilled(true);
+		} else {
+			setIsFormFilled(false);
+		}
+	}, [situationDescription, petLocalizationInputValue]);
 
 	return (
-		<div className="ownerless-pet-post-form">
-			{isLoading ? <Loading size="xl" /> : 
-				<form>
-					<Input 
-						variant="bsd" 
-						placeholder='Qual o local em que o pet está?' 
-						ref={inputRef}
-					/>
-					<VerticalSpace />
-					<Textarea 
-						value={situationDescription}
-						onChange={handleSituationDescriptionChange}
-						variant="bsd" 
-						placeholder="Fique a vontade para dar mais detalhes sobre a situação..." />
-					<VerticalSpace />
-					<RadioGroup onChange={setPetSpecies} value={petSpecies}>
-						<Stack direction="column">
-							<Radio value="1">Cachorro</Radio>
-							<Radio value="2">Gato</Radio>
-						</Stack>
-					</RadioGroup>
-					<VerticalSpace />
-					<div className="form-buttons">
-						<ButtonGroup spacing={10}>
-							<GhostButton textColor="bsd.yellow" label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
-							<CtaButton label="Salvar" onClick={() => submitPost()} isDisabled={false} icon={<CheckIcon />}/>
-						</ButtonGroup>
-					</div>
-				</form>}
+		<div className="ownerless-pet-post-form-overlay-container">
+			<div className="ownerless-pet-post-form">
+				{
+					isLoading ? <Loading size="xl" /> : 
+						<div>
+							<Input
+								value={petLocalizationInputValue}
+								onChange={handlePetLocalizationInputValueChange}
+								variant="bsd" 
+								placeholder='Qual o local em que o pet está?' 
+								ref={inputRef}
+							/>
+							<VerticalSpace />
+							<Textarea 
+								value={situationDescription}
+								onChange={handleSituationDescriptionChange}
+								variant="bsd" 
+								placeholder="Fique a vontade para dar mais detalhes sobre a situação..." />
+							<VerticalSpace />
+							<RadioGroup onChange={handlePetSpeciesChange} value={petSpecies}>
+								<Stack direction="column">
+									<Radio value="1">Cachorro</Radio>
+									<Radio value="2">Gato</Radio>
+								</Stack>
+							</RadioGroup>
+							<VerticalSpace />
+							<div className="form-buttons">
+								<ButtonGroup spacing={10}>
+									<GhostButton textColor="bsd.yellow" label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
+									<CtaButton label="Salvar" onClick={() => submitPost()} isDisabled={!isFormFilled} icon={<CheckIcon />}/>
+								</ButtonGroup>
+							</div>
+						</div>
+				}
+			</div>
 		</div>
 	);
 };

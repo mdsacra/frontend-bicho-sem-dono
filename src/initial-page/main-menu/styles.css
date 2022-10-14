@@ -1,12 +1,19 @@
-.menu-bar {
+.main-menu-container {
     position: absolute;
     bottom: 0;
-    height: 6%;
     width: 100%;
+}
+
+.menu-bar {
+    height: 6%;
+    max-height: 45px;
     background-color: #F2CC0C;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
 }
 
 .post-ownerless-pet {
     text-align: center;
-    margin-top: -10%;
+    margin-bottom: 5px;
 }
