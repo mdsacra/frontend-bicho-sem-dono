@@ -9,7 +9,7 @@ export const IconFeature = (post) => {
 
 	const iconStyle = new Style({
 		image: new Icon({
-			src: ownerlessPetPostMarker,
+			src: ownerlessPetPostMarker
 		})
 	});
 

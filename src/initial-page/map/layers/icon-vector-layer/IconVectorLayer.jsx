@@ -47,6 +47,11 @@ const IconVectorLayer = () => {
 			});
 
 			map.addLayer(vectorLayer);
+			map.on("pointermove", function (e) {
+				const pixel = map.getEventPixel(e.originalEvent);
+				const hit = map.hasFeatureAtPixel(pixel);
+				map.getTarget().style.cursor = hit ? "pointer" : "";
+			});
 			map.on("click", getPostIconInformation);
   
 			return () => {
@@ -58,32 +63,32 @@ const IconVectorLayer = () => {
 	}, [map, posts, getPostIconInformation]);
 
 	return (
-				<>
+		<>
 			{
 				isShowingPostInformation &&
 			<div className="ownerless-pet-post-information-overlay-container">
 				<div className="ownerless-pet-post-information">
 					<div className="drawer-header">
 						<Text fontSize="2xl" color="bsd.blue">Pet abandonado</Text>
-							<Text 
-								fontSize="sm" 
-								fontWeight={400}
+						<Text 
+							fontSize="sm" 
+							fontWeight={400}
 							color="bsd.blue"
-							>
-								{postIconInformation.localization.address}
-							</Text>
+						>
+							{postIconInformation.localization.address}
+						</Text>
 					</div>
 					<div className="drawer-body">
-							<Text fontSize="xl" color="bsd.blue">{postIconInformation.description}</Text>
-							<VerticalSpace />
-							<div className="drawer-close-button">
+						<Text fontSize="xl" color="bsd.blue">{postIconInformation.description}</Text>
+						<VerticalSpace />
+						<div className="drawer-close-button">
 							<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => setIsShowingPostInformation(false)} />
-							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			}
-				</>
+		</>
 	);
 };
 
