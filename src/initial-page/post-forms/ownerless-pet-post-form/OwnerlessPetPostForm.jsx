@@ -10,7 +10,7 @@ import { Loading } from "../../../common-components/loading/Loading";
 import PropTypes from "prop-types";
 
 const OwnerlessPetPostForm = ({ onClose }) => {
-	const [petLocalization, setPetLocalization] = useState({});
+	const [petLocalization, setPetLocalization] = useState(null);
 	const [situationDescription, setSituationDescription] = useState(String);
 	const [petSpecies, setPetSpecies] = useState("1");
 	const [isLoading, setIsLoading] = useState(false);
@@ -43,10 +43,7 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 					west: position.coords.longitude - 0.1
 				};
 
-				console.log(defaultBounds);
 				injectAutoComplete(defaultBounds);
-
-
 			});
 		}
 	}, []);
@@ -90,7 +87,11 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 		<div className="ownerless-pet-post-form">
 			{isLoading ? <Loading size="xl" /> : 
 				<form>
-					<Input variant="bsd" placeholder='Qual o local em que o pet está?' ref={inputRef}/>
+					<Input 
+						variant="bsd" 
+						placeholder='Qual o local em que o pet está?' 
+						ref={inputRef}
+					/>
 					<VerticalSpace />
 					<Textarea 
 						value={situationDescription}
@@ -108,7 +109,7 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 					<div className="form-buttons">
 						<ButtonGroup spacing={10}>
 							<GhostButton textColor="bsd.yellow" label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
-							<CtaButton label="Salvar" onClick={() => submitPost()} icon={<CheckIcon />}/>
+							<CtaButton label="Salvar" onClick={() => submitPost()} isDisabled={false} icon={<CheckIcon />}/>
 						</ButtonGroup>
 					</div>
 				</form>}
