@@ -4,15 +4,7 @@ import VectorSource from "ol/source/Vector";
 import OLVectorLayer from "ol/layer/Vector";
 import { listOwnerlessPetPosts } from "../../../../api/ownerless-pet-post-api";
 import { IconFeature } from "../../features/icon/IconFeature";
-import {
-	Drawer,
-	DrawerContent,
-	DrawerOverlay,
-	DrawerBody,
-	useDisclosure,
-	DrawerHeader,
-	Text
-} from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { GhostButton } from "../../../../common-components/buttons/GhostButton";
 import { CloseIcon } from "@chakra-ui/icons";
 import "./styles.css";
@@ -21,7 +13,6 @@ import { toLonLat } from "ol/proj";
 
 const IconVectorLayer = () => {
 	const { map } = useContext(MapContext); 
-	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [posts, setPosts] = useState(null);
 	const [postIconInformation, setPostIconInformation] = useState({});
 	const [isShowingPostInformation, setIsShowingPostInformation] = useState(false);
@@ -31,7 +22,6 @@ const IconVectorLayer = () => {
 			const feature = map.getFeaturesAtPixel(e.pixel)[0];
 			setPostIconInformation(feature.values_);
 			setIsShowingPostInformation(true);
-			onOpen();
 		});
 	}, [map]);
 
@@ -68,38 +58,32 @@ const IconVectorLayer = () => {
 	}, [map, posts, getPostIconInformation]);
 
 	return (
-		<Drawer
-			isOpen={isOpen}
-			placement='top'
-		>
-			<DrawerOverlay />
-			<DrawerContent minHeight="60%" borderBottomRadius="16px" bg="bsd.red">
-				{ isShowingPostInformation &&
 				<>
+			{
+				isShowingPostInformation &&
+			<div className="ownerless-pet-post-information-overlay-container">
+				<div className="ownerless-pet-post-information">
 					<div className="drawer-header">
-						<DrawerHeader color="bsd.blue">
-							<Text fontSize="2xl">Pet abandonado</Text>
+						<Text fontSize="2xl" color="bsd.blue">Pet abandonado</Text>
 							<Text 
 								fontSize="sm" 
 								fontWeight={400}
+							color="bsd.blue"
 							>
 								{postIconInformation.localization.address}
 							</Text>
-						</DrawerHeader>
 					</div>
 					<div className="drawer-body">
-						<DrawerBody >
 							<Text fontSize="xl" color="bsd.blue">{postIconInformation.description}</Text>
 							<VerticalSpace />
 							<div className="drawer-close-button">
-								<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => onClose()} />
+							<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => setIsShowingPostInformation(false)} />
 							</div>
-						</DrawerBody>
 					</div>
+				</div>
+			</div>
+			}
 				</>
-				}
-			</DrawerContent>
-		</Drawer>
 	);
 };
 
