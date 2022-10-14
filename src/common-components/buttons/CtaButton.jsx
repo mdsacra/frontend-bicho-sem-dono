@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 
-export const CtaButton = ({ label, onClick, icon }) => {
+export const CtaButton = ({ label, onClick, icon, isDisabled }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleClick = () => {
@@ -12,6 +12,7 @@ export const CtaButton = ({ label, onClick, icon }) => {
 	};
 
 	return (<Button
+		isDisabled={isDisabled}
 		backgroundColor='#344459'
 		textColor='#f2cc0c'
 		fontWeight='normal'
@@ -22,7 +23,8 @@ export const CtaButton = ({ label, onClick, icon }) => {
 };
 
 CtaButton.propTypes = {
-	label: PropTypes.string.isRequired,
+	label: PropTypes.string,
 	onClick: PropTypes.func.isRequired,
-	icon: PropTypes.element
+	icon: PropTypes.element,
+	isDisabled: PropTypes.bool
 };
