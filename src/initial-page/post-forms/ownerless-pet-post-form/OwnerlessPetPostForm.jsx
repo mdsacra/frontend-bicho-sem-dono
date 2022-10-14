@@ -69,13 +69,20 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 
 	const handleLocalization = async () => {
 		var place = await autoCompleteRef.current.getPlace();
+		var latitude = await place.geometry.location.lat();
+		var longitude = await place.geometry.location.lng();
 		if (place) {
 			setPetLocalizationInputValue(place.formatted_address);
-			setPetLocalization(petLocalization => (
-				petLocalization.latitude = place.geometry.location.lat(),
-				petLocalization.longitude = place.geometry.location.lng(),
-				petLocalization.address = place.formatted_address
-			));
+			const localization = {
+				"latitude": latitude, 
+				"longitude": longitude,
+				"address": place.formatted_address
+			};
+			console.log(latitude, longitude);
+			setPetLocalization(petLocalization => ({
+				...petLocalization,
+				...localization
+			}));
 		} else {
 			setPetLocalizationInputValue("");
 		}
