@@ -11,7 +11,7 @@
 }
 .ownerless-pet-post-form {
     padding: 88px 16px 16px 16px;
-    height: 60%;
+    min-height: 60%;
     width: 100%;
     max-width: 600px;
     background-color: #FF3936;
