@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import "./MainLayerMap.css";
+import "./styles.css";
 import MapContext from "../context/MapContext";
 import { View, Map } from "ol";
 import { fromLonLat } from "ol/proj";
