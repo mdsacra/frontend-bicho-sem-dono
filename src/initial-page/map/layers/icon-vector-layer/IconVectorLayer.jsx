@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
-import MapContext from "../../context/MapContext";
+import { MapContext } from "../../context/MapContext";
 import VectorSource from "ol/source/Vector";
 import OLVectorLayer from "ol/layer/Vector";
 import { listOwnerlessPetPosts } from "../../../../api/ownerless-pet-post-api";
