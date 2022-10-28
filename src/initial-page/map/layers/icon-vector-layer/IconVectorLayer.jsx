@@ -10,6 +10,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import "./styles.css";
 import { VerticalSpace } from "../../../../common-components/VerticalSpace";
 import { toLonLat } from "ol/proj";
+import { Drawer } from "../../../../common-components/drawer/Drawer";
 
 const IconVectorLayer = () => {
 	const { map } = useContext(MapContext); 
@@ -66,9 +67,8 @@ const IconVectorLayer = () => {
 		<>
 			{
 				isShowingPostInformation &&
-			<div className="ownerless-pet-post-information-overlay-container">
-				<div className="ownerless-pet-post-information">
-					<div className="drawer-header">
+				<Drawer>
+					<div className="post-information-header">
 						<Text fontSize="2xl" color="bsd.blue">Pet abandonado</Text>
 						<Text 
 							fontSize="sm" 
@@ -78,15 +78,14 @@ const IconVectorLayer = () => {
 							{postIconInformation.localization.address}
 						</Text>
 					</div>
-					<div className="drawer-body">
+					<div className="post-information-body">
 						<Text fontSize="xl" color="bsd.blue">{postIconInformation.description}</Text>
 						<VerticalSpace />
-						<div className="drawer-close-button">
+						<div className="post-information-close-button">
 							<GhostButton textColor="bsd.blue" icon={<CloseIcon />} onClick={() => setIsShowingPostInformation(false)} />
 						</div>
 					</div>
-				</div>
-			</div>
+				</Drawer>
 			}
 		</>
 	);
