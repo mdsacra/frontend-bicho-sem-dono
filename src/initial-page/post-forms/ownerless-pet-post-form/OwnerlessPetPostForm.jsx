@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import "./styles.css";
 import { Stack, Textarea, Radio, RadioGroup, ButtonGroup, Input } from "@chakra-ui/react";
 import { VerticalSpace } from "../../../common-components/VerticalSpace";
@@ -10,7 +10,7 @@ import { Loading } from "../../../common-components/loading/Loading";
 import PropTypes from "prop-types";
 import { Drawer } from "../../../common-components/drawer/Drawer";
 
-const OwnerlessPetPostForm = ({ onClose }) => {
+const OwnerlessPetPostForm = ({ onClose, setPosts }) => {
 	const [petLocalization, setPetLocalization] = useState({});
 	const [petLocalizationInputValue, setPetLocalizationInputValue] = useState(String);
 	const [situationDescription, setSituationDescription] = useState(String);
@@ -20,6 +20,28 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 	const inputRef = useRef();
 	const autoCompleteRef = useRef();
     
+	const handleLocalization = useCallback(() => async () => {
+		var place = await autoCompleteRef.current.getPlace();
+		var latitude = await place.geometry.location.lat();
+		var longitude = await place.geometry.location.lng();
+		if (place) {
+			setPetLocalizationInputValue(place.formatted_address);
+			const localization = {
+				"latitude": latitude, 
+				"longitude": longitude,
+				"address": place.formatted_address
+			};
+			console.log(latitude, longitude);
+			console.log(petLocalization);
+			setPetLocalization(petLocalization => ({
+				...petLocalization,
+				...localization
+			}));
+		} else {
+			setPetLocalizationInputValue("");
+		}
+	}, [petLocalization]);
+
 	useEffect(() => {
 		const injectAutoComplete = (defaultBounds) => {
 			if (window.google){
@@ -51,42 +73,26 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 				injectAutoComplete(defaultBounds);
 			});
 		}
-	}, []);
+	}, [handleLocalization]);
 
 	const submitPost = async () => {
 		setIsLoading(true);
 
+		var fakeLocalization = {
+			"latitude": -31.7716463, 
+			"longitude": -52.3396777,
+			"address": "Fake Localization"
+		};
 		const ownerlessPetPost = {
 			description: situationDescription,
 			petSpecies: Number(petSpecies),
-			localization: petLocalization
+			localization: fakeLocalization
 		};
 
 		await createOwnerlessPetPost(ownerlessPetPost);
-
+		setPosts(posts => ([ ...posts, ownerlessPetPost]));
 		setIsLoading(false);
 		onClose();
-	};
-
-	const handleLocalization = async () => {
-		var place = await autoCompleteRef.current.getPlace();
-		var latitude = await place.geometry.location.lat();
-		var longitude = await place.geometry.location.lng();
-		if (place) {
-			setPetLocalizationInputValue(place.formatted_address);
-			const localization = {
-				"latitude": latitude, 
-				"longitude": longitude,
-				"address": place.formatted_address
-			};
-			console.log(latitude, longitude);
-			setPetLocalization(petLocalization => ({
-				...petLocalization,
-				...localization
-			}));
-		} else {
-			setPetLocalizationInputValue("");
-		}
 	};
 
 	const handlePetSpeciesChange = (e) => {
@@ -153,5 +159,6 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 export { OwnerlessPetPostForm };
 
 OwnerlessPetPostForm.propTypes = {
-	onClose: PropTypes.func.isRequired
+	onClose: PropTypes.func.isRequired,
+	setPosts: PropTypes.func
 };
