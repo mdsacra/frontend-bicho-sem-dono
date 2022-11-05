@@ -8,6 +8,7 @@ import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { createOwnerlessPetPost } from "../../../api/ownerless-pet-post-api";
 import { Loading } from "../../../common-components/loading/Loading";
 import PropTypes from "prop-types";
+import { Drawer } from "../../../common-components/drawer/Drawer";
 
 const OwnerlessPetPostForm = ({ onClose }) => {
 	const [petLocalization, setPetLocalization] = useState({});
@@ -112,42 +113,40 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 	}, [situationDescription, petLocalizationInputValue]);
 
 	return (
-		<div className="ownerless-pet-post-form-overlay-container">
-			<div className="ownerless-pet-post-form">
-				{
-					isLoading ? <Loading size="xl" /> : 
-						<div>
-							<Input
-								value={petLocalizationInputValue}
-								onChange={handlePetLocalizationInputValueChange}
-								variant="bsd" 
-								placeholder='Qual o local em que o pet está?' 
-								ref={inputRef}
-							/>
-							<VerticalSpace />
-							<Textarea 
-								value={situationDescription}
-								onChange={handleSituationDescriptionChange}
-								variant="bsd" 
-								placeholder="Fique a vontade para dar mais detalhes sobre a situação..." />
-							<VerticalSpace />
-							<RadioGroup onChange={handlePetSpeciesChange} value={petSpecies}>
-								<Stack direction="column">
-									<Radio value="1">Cachorro</Radio>
-									<Radio value="2">Gato</Radio>
-								</Stack>
-							</RadioGroup>
-							<VerticalSpace />
-							<div className="form-buttons">
-								<ButtonGroup spacing={10}>
-									<GhostButton textColor="bsd.yellow" label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
-									<CtaButton label="Salvar" onClick={() => submitPost()} isDisabled={!isFormFilled} icon={<CheckIcon />}/>
-								</ButtonGroup>
-							</div>
+		<Drawer>
+			{
+				isLoading ? <Loading size="xl" /> : 
+					<div>
+						<Input
+							value={petLocalizationInputValue}
+							onChange={handlePetLocalizationInputValueChange}
+							variant="bsd" 
+							placeholder='Qual o local em que o pet está?' 
+							ref={inputRef}
+						/>
+						<VerticalSpace />
+						<Textarea 
+							value={situationDescription}
+							onChange={handleSituationDescriptionChange}
+							variant="bsd" 
+							placeholder="Fique a vontade para dar mais detalhes sobre a situação..." />
+						<VerticalSpace />
+						<RadioGroup onChange={handlePetSpeciesChange} value={petSpecies}>
+							<Stack direction="column">
+								<Radio value="1">Cachorro</Radio>
+								<Radio value="2">Gato</Radio>
+							</Stack>
+						</RadioGroup>
+						<VerticalSpace />
+						<div className="form-buttons">
+							<ButtonGroup spacing={10}>
+								<GhostButton textColor="bsd.yellow" label="Cancelar" icon={<CloseIcon />} onClick={() => onClose()} />
+								<CtaButton label="Salvar" onClick={() => submitPost()} isDisabled={!isFormFilled} icon={<CheckIcon />}/>
+							</ButtonGroup>
 						</div>
-				}
-			</div>
-		</div>
+					</div>
+			}
+		</Drawer>
 	);
 };
 
