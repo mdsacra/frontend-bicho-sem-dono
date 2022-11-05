@@ -9,9 +9,9 @@ export const Loading = ({ size }) => (
 );
 
 Loading.propTypes = {
-	size: PropTypes.number
+	size: PropTypes.string
 };
 
 Loading.defaultProps = {
-	size: 3
+	size: "3"
 };
