@@ -20,6 +20,28 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 	const inputRef = useRef();
 	const autoCompleteRef = useRef();
     
+	const handleLocalization = useCallback(() => async () => {
+		var place = await autoCompleteRef.current.getPlace();
+		var latitude = await place.geometry.location.lat();
+		var longitude = await place.geometry.location.lng();
+		if (place) {
+			setPetLocalizationInputValue(place.formatted_address);
+			const localization = {
+				"latitude": latitude, 
+				"longitude": longitude,
+				"address": place.formatted_address
+			};
+			console.log(latitude, longitude);
+			console.log(petLocalization);
+			setPetLocalization(petLocalization => ({
+				...petLocalization,
+				...localization
+			}));
+		} else {
+			setPetLocalizationInputValue("");
+		}
+	}, [petLocalization]);
+
 	useEffect(() => {
 		const injectAutoComplete = (defaultBounds) => {
 			if (window.google){
