@@ -73,15 +73,20 @@ const OwnerlessPetPostForm = ({ onClose }) => {
 				injectAutoComplete(defaultBounds);
 			});
 		}
-	}, []);
+	}, [handleLocalization]);
 
 	const submitPost = async () => {
 		setIsLoading(true);
 
+		var fakeLocalization = {
+			"latitude": -31.7716463, 
+			"longitude": -52.3396777,
+			"address": "Fake Localization"
+		};
 		const ownerlessPetPost = {
 			description: situationDescription,
 			petSpecies: Number(petSpecies),
-			localization: petLocalization
+			localization: fakeLocalization
 		};
 
 		await createOwnerlessPetPost(ownerlessPetPost);
