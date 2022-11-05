@@ -20,14 +20,20 @@ const IconVectorLayer = (callback) => {
 	useEffect(() => {
 		if (!map) return;
 
-		if (!posts){
-			var longitudeAndLatitude = toLonLat(map.getView().getCenter());
-			var longitude = longitudeAndLatitude[0];
-			var latitude = longitudeAndLatitude[1];
-			listOwnerlessPetPosts(longitude, latitude).then(result => setPosts(result));
-		}
-  
+		const listPosts = async () => {
+			if (!posts){
+				var longitudeAndLatitude = toLonLat(map.getView().getCenter());
+				var longitude = longitudeAndLatitude[0];
+				var latitude = longitudeAndLatitude[1];
+				var result = await listOwnerlessPetPosts(longitude, latitude);
+				setPosts(result);
+			}
+		};
+		
+		listPosts();
+
 		if (posts?.length > 0){
+			console.log("render");
 			var postLocalizationsMapped = posts.map(post => IconFeature(post));
 
 			const vectorSource = new VectorSource({

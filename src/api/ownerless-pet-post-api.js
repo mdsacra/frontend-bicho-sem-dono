@@ -17,5 +17,5 @@ export const createOwnerlessPetPost = (body) =>
 		body: JSON.stringify(body)
 	})
 		.then((response) => response.json()
-			.then(data => console.log(data)))
+			.then(data => data))
 		.catch((error) => console.log(error));
