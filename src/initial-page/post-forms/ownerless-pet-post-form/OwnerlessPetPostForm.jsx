@@ -20,7 +20,7 @@ const OwnerlessPetPostForm = ({ onClose, setPosts }) => {
 	const inputRef = useRef();
 	const autoCompleteRef = useRef();
     
-	const handleLocalization = useCallback(() => async () => {
+	const handleLocalization = useCallback(async () => {
 		var place = await autoCompleteRef.current.getPlace();
 		var latitude = await place.geometry.location.lat();
 		var longitude = await place.geometry.location.lng();
