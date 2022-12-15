@@ -1,20 +1,17 @@
 import React from "react";
-import { MainLayerMap } from "./map/main-layer/MainLayerMap";
-import { Layers } from "./map/layers/Layers";
-import { TileLayer } from "./map/layers/TileLayer";
-import { IconVectorLayer } from "./map/layers/icon-vector-layer/IconVectorLayer";
 import { MainMenu } from "./main-menu/MainMenu";
+import { Map } from "./map/Map";
+import { usePosts } from "../hooks/use-posts/usePosts";
 
-export function InitialPage() {
+const InitialPage = () => {
+	const { posts, setPosts } = usePosts();
+	
 	return (
 		<div className="initial-page">
-			<MainLayerMap>
-				<Layers>
-					<TileLayer />
-					<IconVectorLayer />
-				</Layers>
-			</MainLayerMap>
-			<MainMenu />
+			<Map posts={posts} />
+			<MainMenu setPosts={setPosts} />
 		</div>
 	);
-}
+};
+
+export { InitialPage };

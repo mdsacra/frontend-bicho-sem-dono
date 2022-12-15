@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
-import "./MainLayerMap.css";
-import MapContext from "../context/MapContext";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import "./styles.css";
+import { MapContext } from "../context/MapContext";
 import { View, Map } from "ol";
 import { fromLonLat } from "ol/proj";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 
 const MainLayerMap = ({ children }) => {
+	const { setMap } = useContext(MapContext);
 	const mapRef = useRef();
-	const [map, setMap] = useState(null);
 	const [deviceLocation, setDeviceLocation] = useState(null);
 	const DEFAULT_ZOOM = 14;
 
@@ -50,14 +50,12 @@ const MainLayerMap = ({ children }) => {
 				mapObject.setTarget(undefined);
 			}  
 		};
-	}, [deviceLocation, getDeviceLocation]);
+	}, [deviceLocation, getDeviceLocation, setMap]);
 
 	return (
-		<MapContext.Provider value={{ map }}>
-			<div ref={mapRef} className="ol-map" style={{ height: window.innerHeight }}>
-				{children}
-			</div>
-		</MapContext.Provider>
+		<div ref={mapRef} className="ol-map" style={{ height: window.innerHeight }}>
+			{children}
+		</div>
 	);
 };
 
